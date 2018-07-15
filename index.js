@@ -7,9 +7,18 @@ const Todo = mongoose.model("Todo",{
     text: String,
     complete: Boolean
 });
+
 const typeDefs = `
   type Query {
     hello(name: String): String!
+  }
+  type Todo {
+      id: ID!
+      text: String!
+      complete: Boolean!
+  }
+  type Mutation {
+      createTodo(text: String!): Todo!
   }
 `
 
