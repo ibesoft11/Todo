@@ -1,0 +1,15 @@
+{
+  "name": "todoapp",
+  "version": "1.0.0",
+  "description": "a simple todo list app built on the mern stack",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "ibe ogele",
+  "license": "ISC",
+  "dependencies": {
+    "graphql-yoga": "^1.14.12",
+    "mongoose": "^5.2.3"
+  }
+}
