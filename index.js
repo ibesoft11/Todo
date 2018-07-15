@@ -26,6 +26,13 @@ const resolvers = {
   Query: {
     hello: (_, { name }) => `Hello ${name || 'World'}`,
   },
+  Mutation: {
+      createTodo: async (_, { text }) => {
+          const todo = new Todo({text, complete:false});
+          await todo.save();
+          return todo;
+      }
+  }
 }
 
 const server = new GraphQLServer({ typeDefs, resolvers })
