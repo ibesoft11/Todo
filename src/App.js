@@ -30,6 +30,15 @@ const DeleteMutation = gql`
     deleteTodo(id: $id)
   }
 `;
+const CreateMutation = gql`
+  mutation($text: String!) {
+    createTodo(text: $text){
+      id
+      text
+      complete
+    }
+  }
+`;
 
 class App extends Component {
   updateTodo = async todo => {
@@ -64,6 +73,20 @@ class App extends Component {
       }
     })
   };
+  createTodo = async (text) => {
+    await this.props.createTodo({
+      variables: {
+        text
+      },
+      update: (store, {data: {createTodo}}) => {
+        //read data from cache
+        const data = store.readQuery({query: TodosQuery});
+        data.todos.unshift(createTodo);
+        //write data back to the cache
+        store.writeQuery({query: TodosQuery, data});
+      }
+    })
+  };
   render() {
     const {data: {loading, todos}} = this.props;
     if (loading) {
@@ -73,7 +96,7 @@ class App extends Component {
     <div style={{display: 'flex'}}>
       <div style={{margin: 'auto', width:400}}>
       <Paper elevation={1}>
-      <Form/>
+      <Form submit={this.createTodo}/>
       <List>
           {todos.map(todo => (
             <ListItem
@@ -105,6 +128,7 @@ class App extends Component {
 }
 
 export default compose(
+  graphql(CreateMutation, {name: 'createTodo'}),
   graphql(DeleteMutation, {name: 'deleteTodo'}),
   graphql(UpdateMutation, {name: 'updateTodo'}),
   graphql(TodosQuery)
